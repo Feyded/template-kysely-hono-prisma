@@ -1,0 +1,34 @@
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
+
+export async function createUsers() {
+  const users = [
+    {
+      first_name: "John",
+      middle_name: "M",
+      last_name: "Doe",
+      email: "john@example.com",
+    },
+    {
+      first_name: "Mark",
+      middle_name: "K",
+      last_name: "Kanlas",
+      email: "mark@example.com",
+    },
+  ];
+
+  for (const user of users) {
+    const createdUser = await prisma.users.upsert({
+      where: { email: user.email },
+      update: {},
+      create: user,
+    });
+
+    console.log(
+      `Create user: ${createdUser.first_name} ${createdUser.last_name}`
+    );
+  }
+
+  return users;
+}

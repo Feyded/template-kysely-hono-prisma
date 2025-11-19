@@ -1,0 +1,43 @@
+import { SignJWT, jwtVerify, type JWTPayload } from "jose";
+import { NotFoundError } from "./error.js";
+import { envConfig } from "@/env.js";
+
+type UserArgs = {
+  id: string;
+  email: string;
+};
+
+const getAccessSecret = () => {
+  const secretString = envConfig.JWT_ACCESS_SECRET;
+  if (!secretString) throw new NotFoundError("JWT_ACCESS_SECRET is not set");
+  return new TextEncoder().encode(secretString);
+};
+
+const getRefreshSecret = () => {
+  const secretString = envConfig.JWT_REFRESH_SECRET;
+  if (!secretString) throw new NotFoundError("JWT_REFRESH_SECRET is not set");
+  return new TextEncoder().encode(secretString);
+};
+
+export const generateAccessToken = async (payload: UserArgs) => {
+  return await new SignJWT(payload)
+    .setProtectedHeader({ alg: "HS256" })
+    .setExpirationTime("15m") // short-lived access token
+    .sign(getAccessSecret());
+};
+
+export const generateRefreshToken = async (payload: UserArgs) => {
+  return await new SignJWT(payload)
+    .setProtectedHeader({ alg: "HS256" })
+    .setExpirationTime("7d") // long-lived refresh token
+    .sign(getRefreshSecret());
+};
+
+export const verifyToken = async (token: string) => {
+  try {
+    const { payload } = await jwtVerify(token, getAccessSecret());
+    return payload as JWTPayload;
+  } catch {
+    return null;
+  }
+};
