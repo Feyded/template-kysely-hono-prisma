@@ -1,19 +1,33 @@
-import { loginService, refreshTokenService } from "@/services/auth.js";
+import { loginService } from "@/services/auth.js";
 import { PrismaClient } from "@prisma/client";
 import type { Context } from "hono";
+import { setCookie } from "hono/cookie";
 import { StatusCodes } from "http-status-codes";
 
 const prisma = new PrismaClient();
 
 export async function loginController(c: Context) {
   const body = await c.req.json();
-  const token = await loginService(body.email, body.password);
-  return c.json(token, StatusCodes.OK);
-}
+  const tokens = await loginService(body.email, body.password);
 
-//double check the this controller and jump to refresh token service
-export async function refreshTokenController(c: Context) {
-  const refreshToken = await c.req.json();
-  const token = await refreshTokenService(refreshToken);
-  return c.json(token, StatusCodes.OK);
+  setCookie(c, "auth__access_token", tokens.accessToken, {
+    httpOnly: true,
+    secure: true,
+    sameSite: "Strict",
+    path: "/",
+    maxAge: 60 * 60 * 24 * 30,
+  });
+
+  setCookie(c, "auth__refresh_token", tokens.refreshToken, {
+    httpOnly: true,
+    secure: true,
+    sameSite: "Strict",
+    path: "/",
+    maxAge: 60 * 60 * 24 * 30,
+  });
+
+  return c.json(
+    { access_token: tokens.accessToken, refresh_token: tokens.refreshToken },
+    StatusCodes.OK
+  );
 }
