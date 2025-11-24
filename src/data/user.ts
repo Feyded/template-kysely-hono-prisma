@@ -21,6 +21,7 @@ export async function getUsersData() {
       first_name: true,
       middle_name: true,
       last_name: true,
+      role: true,
       email: true,
       created_at: true,
       updated_at: true,

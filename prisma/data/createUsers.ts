@@ -9,12 +9,14 @@ export async function createUsers() {
       middle_name: "M",
       last_name: "Doe",
       email: "john@example.com",
+      password: "$2a$12$Ax19rFKcGjJGjrvLoeQP.ee9decDIHjjfPEal32RztBO0htNnWKIW",
     },
     {
       first_name: "Mark",
       middle_name: "K",
       last_name: "Kanlas",
       email: "mark@example.com",
+      password: "$2a$12$Ax19rFKcGjJGjrvLoeQP.ee9decDIHjjfPEal32RztBO0htNnWKIW",
     },
   ];
 
