@@ -24,4 +24,11 @@ model users {
   password    String
   created_at  DateTime @default(now())
   updated_at  DateTime @updatedAt
+
+  @@index([created_at])
+  @@index([updated_at])
+  @@index([first_name])
+  @@index([last_name])
+  @@index([is_active])
+  @@index([email])
 }
