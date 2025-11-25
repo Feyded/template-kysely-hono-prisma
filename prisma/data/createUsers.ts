@@ -6,14 +6,14 @@ export async function createUsers() {
   const users = [
     {
       first_name: "John",
-      middle_name: "M",
+      middle_name: "Morgan",
       last_name: "Doe",
       email: "john@example.com",
       password: "$2a$12$Ax19rFKcGjJGjrvLoeQP.ee9decDIHjjfPEal32RztBO0htNnWKIW",
     },
     {
       first_name: "Mark",
-      middle_name: "K",
+      middle_name: "Kanlo",
       last_name: "Kanlas",
       email: "mark@example.com",
       password: "$2a$12$Ax19rFKcGjJGjrvLoeQP.ee9decDIHjjfPEal32RztBO0htNnWKIW",
