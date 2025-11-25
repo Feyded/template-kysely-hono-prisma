@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, UserRoleType } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
@@ -9,7 +9,7 @@ export async function createUsers() {
       middle_name: "Paul",
       last_name: "Ilagan",
       email: "james@example.com",
-      role: "SUPER_ADMIN" as const,
+      role: UserRoleType.SUPER_ADMIN,
       password: "$2a$12$Ax19rFKcGjJGjrvLoeQP.ee9decDIHjjfPEal32RztBO0htNnWKIW",
     },
     {
