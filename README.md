@@ -2,7 +2,7 @@
 
 Template Kysely, Hono, Prisma Repo By Dean Zaballero
 
-This project is built using **Node.js**, **Hono**, **Kysely**, **TypeScript**, **Prisma**, and **MySQL** to provide a robust and scalable API. This repo also inspired by bossrodTV
+This project is built using **Node.js**, **Hono**, **Kysely**, **TypeScript**, **Prisma**, and **Postgres** to provide a robust and scalable API. The repo is using the zod-openapi and swagger/scalar for api ui documentation, This repo also inspired by bossrodTV
 
 ---
 
@@ -13,7 +13,7 @@ This project is built using **Node.js**, **Hono**, **Kysely**, **TypeScript**, *
 - **Kysely** – Type-safe SQL query builder for TypeScript
 - **TypeScript** – Typed superset of JavaScript
 - **Prisma ORM** – Type-safe database client
-- **MySQL** – Relational database
+- **Postgres** – Relational database
 - **dotenv** – Environment variable manager
 
 ---
