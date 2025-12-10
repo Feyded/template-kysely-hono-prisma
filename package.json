@@ -1,5 +1,10 @@
 {
   "name": "template-kysely-hono-prisma",
+  "repository": "https://github.com/Feyded/template-kysely-hono-prisma.git",
+  "bugs": {
+    "url": "https://github.com/Feyded/template-kysely-hono-prisma/issues"
+  },
+  "description": "Template Hono Prisma Kysely",
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/app.ts",
