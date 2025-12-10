@@ -1,12 +1,14 @@
-import { PrismaClient } from "@prisma/client";
-import { createUsers } from "./data/createUsers.js";
+import { createUsers } from "./data/users.js";
+import { createDbClient } from "@/db/create-db-client.js";
 
-const prisma = new PrismaClient();
+const dbClient = createDbClient();
 
 async function main() {
- const users = await createUsers();
+  const users = await createUsers(dbClient);
 }
 
 main()
   .catch((e) => console.error(e))
-  .finally(async () => await prisma.$disconnect());
+  .finally(async () => {
+    await dbClient.destroy();
+  });

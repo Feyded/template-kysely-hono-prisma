@@ -1,8 +1,10 @@
-import { Hono } from "hono";
-import { loginController } from "./index.js";
-import { authenticationMiddleware } from "@/middlewares/authentication.js";
+import type { HonoEnv } from "@/types/hono.js";
+import { OpenAPIHono } from "@hono/zod-openapi";
+import { loginRoute, loginRouteHandler } from "./login.js";
 
-const router = new Hono()
-  .post("/auth/login", loginController)
+const authRoutes = new OpenAPIHono<HonoEnv>().openapi(
+  loginRoute,
+  loginRouteHandler
+);
 
-export default router;
+export default authRoutes;

@@ -1,19 +1,15 @@
-import { authenticationMiddleware } from "@/middlewares/authentication.js";
-import { Hono } from "hono";
-import {
-  createUserController,
-  getMeController,
-  getUserController,
-  getUsersController,
-  updateUserController,
-} from "./index.js";
+import type { HonoEnv } from "@/types/hono.js";
+import { OpenAPIHono } from "@hono/zod-openapi";
+import { getUsersRoute, getUsersRouteHandler } from "./get-users.js";
+import { getUserRoute, getUserRouteHandler } from "./get-user.js";
+import { createUserRoute, createUserRouteHandler } from "./create-user.js";
+import { updateUserRoute, updateUserRouteHandler } from "./update-user.js";
 
-const router = new Hono()
-  .get("/me", authenticationMiddleware, getMeController)
-  .get("/users", authenticationMiddleware, getUsersController)
-  .post("/users", createUserController)
-  .get("/users/public", (c) => c.text("Public User"))
-  .get("/users/:id", authenticationMiddleware, getUserController)
-  .put("/users/:id", authenticationMiddleware, updateUserController);
+const usersRoutes = new OpenAPIHono<HonoEnv>();
+usersRoutes
+  .openapi(getUserRoute, getUserRouteHandler)
+  .openapi(getUsersRoute, getUsersRouteHandler)
+  .openapi(createUserRoute, createUserRouteHandler)
+  .openapi(updateUserRoute, updateUserRouteHandler);
 
-export default router;
+export default usersRoutes;

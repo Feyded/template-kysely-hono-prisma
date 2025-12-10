@@ -10,8 +10,9 @@ import { setCookie, getCookie } from "hono/cookie";
 export async function authenticationMiddleware(c: Context, next: Next) {
   let accessToken = getCookie(c, "auth__access_token");
 
-  let verifiedAccessToken = accessToken ? await verifyAccessToken(accessToken) : null;
-
+  let verifiedAccessToken = accessToken
+    ? await verifyAccessToken(accessToken)
+    : null;
   if (!verifiedAccessToken) {
     const refreshToken = getCookie(c, "auth__refresh_token");
 
@@ -40,7 +41,10 @@ export async function authenticationMiddleware(c: Context, next: Next) {
     verifiedAccessToken = await verifyAccessToken(accessToken);
   }
 
-  c.set("user", verifiedAccessToken);
+  c.set("session", {
+    id: verifiedAccessToken?.id,
+    email: verifiedAccessToken?.email,
+  });
 
   return next();
 }

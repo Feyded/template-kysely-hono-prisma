@@ -1,8 +1,7 @@
-import { PrismaClient, UserRoleType } from "@prisma/client";
+import type { DbClient } from "@/db/create-db-client.js";
+import { UserRoleType } from "@/db/types.js";
 
-const prisma = new PrismaClient();
-
-export async function createUsers() {
+export async function createUsers(dbClient: DbClient) {
   const users = [
     {
       first_name: "James",
@@ -29,15 +28,15 @@ export async function createUsers() {
   ];
 
   for (const user of users) {
-    const createdUser = await prisma.users.upsert({
-      where: { email: user.email },
-      update: {},
-      create: user,
-    });
+    const exist = await dbClient
+      .selectFrom("users")
+      .where("email", "=", user.email)
+      .executeTakeFirst();
 
-    console.log(
-      `Create user: ${createdUser.first_name} ${createdUser.last_name}`
-    );
+    if (!exist) {
+      await dbClient.insertInto("users").values(user).execute();
+      console.log(`Seeded user: ${user.first_name} ${user.last_name}`);
+    }
   }
 
   return users;

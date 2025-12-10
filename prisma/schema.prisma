@@ -5,11 +5,13 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"
+  provider = "prisma-kysely"
+  output   = "../src/db"
+  fileName = "types.ts"
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DB_URL")
 }
 
@@ -20,7 +22,7 @@ enum UserRoleType {
 }
 
 model users {
-  id          String       @id @default(uuid())
+  id          String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   first_name  String
   middle_name String?
   last_name   String
@@ -28,8 +30,8 @@ model users {
   is_active   Boolean      @default(true)
   email       String       @unique
   password    String
-  created_at  DateTime     @default(now())
-  updated_at  DateTime     @updatedAt
+  created_at  DateTime     @default(now()) @db.Timestamptz(6)
+  updated_at  DateTime     @default(now()) @db.Timestamptz(6)
 
   @@index([created_at])
   @@index([updated_at])
@@ -37,4 +39,31 @@ model users {
   @@index([last_name])
   @@index([is_active])
   @@index([email])
+}
+
+enum OrderPaymentMethod {
+  CASH
+  GCASH
+  PAYMAYA
+}
+
+enum OrderStatus {
+  PAID
+  PENDING
+}
+
+model orders {
+  id             String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  customer_name  String
+  payment_method OrderPaymentMethod @default(CASH)
+  status         OrderStatus        @default(PENDING)
+  image_path     String?
+  amount         Float            
+  created_at     DateTime           @default(now()) @db.Timestamptz(6)
+  updated_at     DateTime           @default(now()) @db.Timestamptz(6)
+
+  @@index([payment_method])
+  @@index([status])
+  @@index([created_at])
+  @@index([updated_at])
 }
