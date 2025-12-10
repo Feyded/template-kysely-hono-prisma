@@ -40,21 +40,3 @@ export const loginService = async ({
 
   return { accessToken, refreshToken };
 };
-
-import { UserRoleType } from "@/db/types.js";
-import { z } from "@hono/zod-openapi";
-
-export const authSchemaObject = {
-  email: z.email().openapi({
-    example: "john.lee@gmail.com",
-  }),
-  password: z.string().openapi({
-    example: "password",
-  }),
-};
-
-export const authSchema = z.object(authSchemaObject);
-export const authSchemaOpenApi = authSchema.openapi("Auth");
-export const authSchemaFields = z.enum(
-  Object.keys(authSchemaObject) as [string, ...string[]]
-);
