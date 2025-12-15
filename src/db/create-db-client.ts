@@ -2,7 +2,7 @@ import { envConfig, isTest } from "@/env.js";
 import { Kysely, PostgresDialect } from "kysely";
 import { ForbiddenError } from "@/utils/error.js";
 import pg from "pg";
-import type { DB as KyselySchema } from "./types.js";
+import type { KyselySchema } from "./schema.js";
 
 export function createDbClient() {
   if (isTest())
@@ -42,4 +42,6 @@ export function createTestDbClient() {
   return dbClient;
 }
 
-export type DbClient = ReturnType<typeof createDbClient> | ReturnType<typeof createTestDbClient>;
+export type DbClient =
+  | ReturnType<typeof createDbClient>
+  | ReturnType<typeof createTestDbClient>;
