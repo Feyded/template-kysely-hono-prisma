@@ -9,7 +9,7 @@ export function isTest() {
 }
 
 const envSchema = z.object({
-  APP_PORT: z.coerce.number().default(3000),
+  APP_PORT: z.coerce.number().default(1234),
   STAGE: z.enum(STAGES).default(STAGES.Dev),
   DB_URL: z.string(),
   TEST_DB_URL: z.string(),
